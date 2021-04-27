@@ -146,7 +146,7 @@
 				<configuration>
 					<url>http://localhost:8080/manager/text</url>
 					<server>TomcatServer</server>
-					<path>/salary</path>
+					<path>/salary/</path>
 				</configuration>
 			</plugin>
 		</plugins>
