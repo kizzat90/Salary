@@ -23,10 +23,17 @@ public class SalaryController {
             Regex.getInstance().validateName(name);
             return new ResponseEntity<>(salaryService.getTaxPayableByName(name), HttpStatus.OK);
         } catch (Exception exception) {
-            // TODO : Must create proper error message return
-            throw new CustomErrorMessage(exception.getMessage(), "Unable to get Tax Payable by name");
+            throw new CustomErrorMessage(HttpStatus.OK, exception.getMessage(), "Unable to get Tax Payable by name");
         }
     }
 
-    // TODO : Update endpoint
+    @RequestMapping(name = "updateMonthlySalary", method = RequestMethod.POST)
+    public ResponseEntity<CustomMessage> updateMonthlySalary(@RequestParam("id") Long id, @RequestParam("monthlySalary") Long monthlySalary) throws CustomErrorMessage {
+        try {
+            Regex.getInstance().validateWholeNumber(monthlySalary);
+            return new ResponseEntity<>(salaryService.updateMonthlySalary(id, monthlySalary), HttpStatus.OK);
+        } catch (Exception exception) {
+            throw new CustomErrorMessage(HttpStatus.OK, exception.getMessage(), "Unable to update monthly salary");
+        }
+    }
 }

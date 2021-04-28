@@ -3,10 +3,10 @@ package com.salary.app.util;
 import org.springframework.http.HttpStatus;
 
 public class CustomMessage {
+    private HttpStatus httpStatus;
     private String name;
     private int salary;
     private int tax_payable;
-    private HttpStatus httpStatus;
 
     private CustomMessage() {}
 
@@ -15,6 +15,12 @@ public class CustomMessage {
         this.name = name;
         this.salary = salary;
         this.tax_payable = tax_payable;
+    }
+
+    public CustomMessage(String name, int salary) {
+        this.httpStatus = HttpStatus.OK;
+        this.name = name;
+        this.salary = salary;
     }
 
     public HttpStatus getHttpStatus() {

@@ -14,20 +14,16 @@ public class SalaryService {
 
     public CustomMessage getTaxPayableByName(String name) throws Exception {
         Salary salary;
-        try {
-            if (salaryRepository.getSalaryByName(name) != null) {
-                salary = salaryRepository.getSalaryByName(name);
-            } else {
-                throw new Exception(name + " doesn't exist");
-            }
-
-            int yearlySalary = this.calculateYearlySalary(salary.getMonthlySalary());
-            int taxPayable = this.calculateTaxPayable(yearlySalary);
-
-            return new CustomMessage(name, yearlySalary * 100, taxPayable);
-        } catch (Exception exception) {
-            throw new Exception(exception.getMessage());
+        if (salaryRepository.getSalaryByName(name) != null) {
+            salary = salaryRepository.getSalaryByName(name);
+        } else {
+            throw new Exception(name + " doesn't exist");
         }
+
+        int yearlySalary = this.calculateYearlySalary(salary.getMonthlySalary());
+        int taxPayable = this.calculateTaxPayable(yearlySalary);
+
+        return new CustomMessage(name, yearlySalary * 100, taxPayable);
     }
 
     private int calculateYearlySalary(Long monthlySalary) {
@@ -57,5 +53,15 @@ public class SalaryService {
             rate = 83650 + ((yearlySalary - 400000) * 0.25);
         }
         return (int) rate * 100;
+    }
+
+    public CustomMessage updateMonthlySalary(Long id, Long monthlySalary) throws Exception {
+        Salary salary;
+        if (!salaryRepository.findById(id).isPresent()) {
+            throw new Exception("Id " + id + " is not valid");
+        }
+        salaryRepository.updateMonthlySalary(id, monthlySalary);
+        salary = salaryRepository.findById(id).get();
+        return new CustomMessage(salary.getName(), salary.getMonthlySalary().intValue());
     }
 }
